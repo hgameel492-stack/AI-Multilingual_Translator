@@ -1,7 +1,6 @@
 import gradio as gr
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 import tempfile
-import os
 
 # ==========================
 # Load Model
@@ -156,7 +155,14 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
     clear_btn.click(
         fn=clear_fields,
         inputs=[],
-        outputs=[input_text, output_text, stats_box, source_dropdown, target_dropdown],
+        outputs=[
+            input_text,
+            output_text,
+            stats_box,
+            source_dropdown,
+            target_dropdown,
+            download_file,
+        ],
     )
     gr.Examples(
         examples=[
