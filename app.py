@@ -1,5 +1,7 @@
 import gradio as gr
 from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+import tempfile
+import os
 
 # ==========================
 # Load Model
@@ -78,6 +80,21 @@ def text_statistics(text):
     return f"Characters: {characters} | Words: {words}"
 
 
+def download_translation(text):
+
+    if text.strip() == "":
+        return None
+
+    temp_file = tempfile.NamedTemporaryFile(
+        delete=False, suffix=".txt", mode="w", encoding="utf-8"
+    )
+
+    temp_file.write(text)
+    temp_file.close()
+
+    return temp_file.name
+
+
 # ==========================
 # Gradio Interface
 # ==========================
@@ -113,15 +130,18 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
             )
 
         with gr.Row():
+
             translate_btn = gr.Button("🌍 Translate", variant="primary", size="lg")
             swap_btn = gr.Button("🔄 Swap", size="lg")
             clear_btn = gr.Button("🧹 Clear", size="lg")
+            download_btn = gr.Button("📥 Download TXT", size="lg")
 
         with gr.Column():
 
             output_text = gr.Textbox(
                 lines=10, max_lines=15, label="🌍 Translation", interactive=False
             )
+            download_file = gr.File(label="📄 Download Translation", interactive=False)
 
     translate_btn.click(
         fn=translate,
@@ -208,5 +228,10 @@ Facebook NLLB-200-distilled-600M
 
 </div>
 """)
+    download_btn.click(
+        fn=download_translation,
+        inputs=output_text,
+        outputs=download_file,
+    )
 
 demo.launch()
