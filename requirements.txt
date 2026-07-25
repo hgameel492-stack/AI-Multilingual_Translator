@@ -1,5 +1,7 @@
-gradio
+gradio==5.13.1
 transformers
 torch
 sentencepiece
+protobuf
 sacremoses
+accelerate
