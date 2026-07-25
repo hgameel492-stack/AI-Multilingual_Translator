@@ -65,7 +65,7 @@ def swap_languages(source_lang, target_lang):
 
 
 def clear_fields():
-    return "", "", "Characters: 0 | Words: 0", "Arabic", "English"
+    return "", "", "Characters: 0 | Words: 0", "Arabic", "English", None
 
 
 def text_statistics(text):
@@ -81,17 +81,17 @@ def text_statistics(text):
 
 def download_translation(text):
 
-    if text.strip() == "":
+    if not text.strip():
         return None
 
-    temp_file = tempfile.NamedTemporaryFile(
+    file = tempfile.NamedTemporaryFile(
         delete=False, suffix=".txt", mode="w", encoding="utf-8"
     )
 
-    temp_file.write(text)
-    temp_file.close()
+    file.write(text)
+    file.close()
 
-    return temp_file.name
+    return file.name
 
 
 # ==========================
@@ -128,12 +128,12 @@ with gr.Blocks(theme=gr.themes.Soft()) as demo:
                 label="🎯 Target Language",
             )
 
-        with gr.Row():
+    with gr.Row():
 
-            translate_btn = gr.Button("🌍 Translate", variant="primary", size="lg")
-            swap_btn = gr.Button("🔄 Swap", size="lg")
-            clear_btn = gr.Button("🧹 Clear", size="lg")
-            download_btn = gr.Button("📥 Download TXT", size="lg")
+        translate_btn = gr.Button("🌍 Translate", variant="primary", size="lg")
+        swap_btn = gr.Button("🔄 Swap", size="lg")
+        clear_btn = gr.Button("🧹 Clear", size="lg")
+        download_btn = gr.Button("📥 Download TXT", size="lg")
 
         with gr.Column():
 
